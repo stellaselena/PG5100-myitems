@@ -5,40 +5,43 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 >
 
 <ui:composition template="layout.xhtml">
 
-    <ui:define name="title">My Items Home Page</ui:define>
+    <ui:define name="title">Item Details</ui:define>
 
     <ui:define name="content">
 
-        <c:if test="#{loggingController.loggedIn}">
-            <h:button value="Create Item" outcome="newItem.xhtml" id="createItem"/>
-        </c:if>
+        <h2>Statistics</h2>
+        <h:form id="statisticForm">
+            Select items:
+            <h:selectOneMenu value="#{itemController.types}" onchange="submit()" id="statistic">
+                <f:selectItems value="#{itemController.itemTypeModes}"/>
+            </h:selectOneMenu>
+        </h:form>
 
-        <h2>Items</h2>
-        <h:link value="Item statistics" outcome="items.jsf" id="itemLink"/>
+        <br/>
+        <b>Items in category</b>: <h:outputLabel value="#{itemController.itemTypeCount}" id="count"/> <br/>
         <hr/>
 
-        <c:if test="#{loggingController.loggedIn}">
-            <h:form id="showOnlyOwnItemsForm">
-                <h:selectBooleanCheckbox value="#{itemController.showOnlyOwnItems}"
-                                         id="showOnlyOwnItems" onclick="submit()"/>
-                <h:outputLabel for="showOnlyOwnItems" value="Only created by #{loggingController.registeredUser}"/>
-            </h:form>
-        </c:if>
+
+        <h:form id="categoryForm">
+            Select items:
+            <h:selectOneMenu value="#{itemController.collection}" onchange="submit()" id="category">
+                <f:selectItems value="#{itemController.collectionModes}"/>
+            </h:selectOneMenu>
+        </h:form>
 
         <c:choose>
-            <c:when test="#{itemController.items.size() == 0}">
-                <h:outputText value="No Items to display. Be the first to create one!"/>
+            <c:when test="#{itemController.itemCollection.size() == 0}">
+                <h:outputText value="No items available in selected category"/>
 
             </c:when>
 
             <c:otherwise>
 
-                <h:dataTable value="#{itemController.items}" var="item" border="1" id="itemTable">
+                <h:dataTable value="#{itemController.itemCollection}" var="item" border="1" id="itemTable">
                     <h:column>
                         <f:facet name="header">Author</f:facet>
                         <h:outputText value="#{item.user.userId}"/>
@@ -68,8 +71,8 @@
             </c:otherwise>
         </c:choose>
 
+
     </ui:define>
 
 </ui:composition>
 </html>
-

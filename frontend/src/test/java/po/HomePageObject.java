@@ -57,6 +57,13 @@ public class HomePageObject extends PageObject{
         return new UserDetailsPageObject(driver);
     }
 
+    public ItemPageObject toItemDetails() {
+
+        driver.findElement(By.id("itemLink")).click();
+        waitForPageToLoad();
+        return new ItemPageObject(driver);
+    }
+
     public int getNumberOfDisplayedItems(){
         List<WebElement> elements = driver.findElements(By.xpath("//table[@id='itemTable']//tbody//tr[string-length(text()) > 0]"));
         return elements.size();

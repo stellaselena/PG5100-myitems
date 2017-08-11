@@ -51,13 +51,14 @@ public class ItemEJBTest extends EJBTestBase {
 
         assertTrue(createUser(userId));
 
-        itemEJB.createItem(userId, itemType1, "Honda", "Civic");
-        itemEJB.createItem(userId, itemType1, "Nissan", "Leaf");
-        itemEJB.createItem(userId, itemType2, "foo", "bar");
+        long id1 =itemEJB.createItem(userId, itemType1, "Honda", "Civic");
+        long id2 =itemEJB.createItem(userId, itemType1, "Nissan", "Leaf");
+        long id3 =itemEJB.createItem(userId, itemType2, "foo", "bar");
 
         assertEquals(3, itemEJB.getAllItems().size());
         assertEquals(2, itemEJB.getAllItemsByType(itemType1).size());
-        assertEquals(itemType1, itemEJB.getAllItems().get(0).getType());
+        assertEquals(itemType1, itemEJB.getItem(id1).getType());
+
 
     }
 
