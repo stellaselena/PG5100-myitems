@@ -3,9 +3,13 @@ package entity;
 import validation.NotEmpty;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Stella on 11.08.2017.
@@ -31,7 +35,21 @@ public class User {
     @NotEmpty @Size(min=1 , max = 32)
     private String lastName;
 
+    @ManyToMany(mappedBy = "usedByUsers", fetch = FetchType.EAGER)
+    private List<Item> itemsUsed;
+
     public User() {
+    }
+
+    public List<Item> getItemsUsed() {
+        if(itemsUsed == null){
+            return new ArrayList<>();
+        }
+        return itemsUsed;
+    }
+
+    public void setItemsUsed(List<Item> itemsUsed) {
+        this.itemsUsed = itemsUsed;
     }
 
     public String getUserId() {

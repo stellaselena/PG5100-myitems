@@ -20,6 +20,24 @@ public class UserEJBTest extends EJBTestBase {
 
 
     @Test
+    public void testAttendEvent(){
+
+        String user = "foo";
+        String password = "bar";
+
+        assertTrue(createUser(user, password));
+
+        Long itemId = itemEJB.createItem(user, "Car", "title", "text");
+        assertFalse(userEJB.isUserUsingItem(user, itemId));
+
+        userEJB.addItem(user, itemId);
+        assertTrue(userEJB.isUserUsingItem(user, itemId));
+
+        userEJB.removeItem(user, itemId);
+        assertFalse(userEJB.isUserUsingItem(user, itemId));
+    }
+
+    @Test
     public void testCanCreateAUser() {
 
         String user = "foo";

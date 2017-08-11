@@ -18,15 +18,16 @@
             <h:button value="Create Item" outcome="newItem.xhtml" id="createItem"/>
         </c:if>
 
-        <h2>Items</h2>
-        <h:link value="Item statistics" outcome="items.jsf" id="itemLink"/>
-        <hr/>
+        <h2>Items Overview</h2>
+
+        <h3><h:link value="Item statistics" outcome="itemDetails.jsf" id="itemLink"/></h3>
+        <br/>
 
         <c:if test="#{loggingController.loggedIn}">
             <h:form id="showOnlyOwnItemsForm">
                 <h:selectBooleanCheckbox value="#{itemController.showOnlyOwnItems}"
                                          id="showOnlyOwnItems" onclick="submit()"/>
-                <h:outputLabel for="showOnlyOwnItems" value="Only created by #{loggingController.registeredUser}"/>
+                <h:outputLabel for="showOnlyOwnItems" value="Show only created by #{loggingController.registeredUser}"/>
             </h:form>
         </c:if>
 
@@ -53,6 +54,10 @@
                         <h:outputText value="#{item.title}"/>
                     </h:column>
                     <h:column>
+                        <f:facet name="header">Users using</f:facet>
+                        <h:outputText value="#{fn:length(item.usedByUsers)}"/>
+                    </h:column>
+                    <h:column>
                         <f:facet name="header">Description</f:facet>
                         <h:outputText value="#{itemController.getItemExcerpt(item)}" id="text"/>
                     </h:column>
@@ -62,6 +67,17 @@
                             <f:convertDateTime pattern="dd/MM/yyyy, HH:mm:ss"/>
                         </h:outputText>
                     </h:column>
+                    <c:if test="#{loggingController.loggedIn}">
+                        <h:column>
+                            <f:facet name="header">Using</f:facet>
+                            <h:form>
+                                <h:selectBooleanCheckbox
+                                        value="#{itemController.useMap[item.id]}"
+                                        onclick="submit()"
+                                        valueChangeListener="#{itemController.updateUsage(item.id, ! itemController.useMap[item.id])}"/>
+                            </h:form>
+                        </h:column>
+                    </c:if>
 
                 </h:dataTable>
 

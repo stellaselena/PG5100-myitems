@@ -209,5 +209,25 @@ public class MyItemsIT extends WebTestBase {
        assertEquals(o + 1, itemPageObject.getNumberOfDisplayedItems());
    }
 
+    @Test
+    public void testUseItem(){
+        String itemName = getUniqueTitle();
+        String first = getUniqueId();
+        createAndLogNewUser(first);
+        CreateItemPageObject create = home.toCreateItem();
+        home = create.createItem(itemName,"Car","title");
+
+        home.setUsage(itemName, false);
+        assertFalse(home.isUsing(itemName));
+        assertEquals(0, home.getNumberOfUsages(itemName));
+
+        home.setUsage(itemName, true);
+        assertTrue(home.isUsing(itemName));
+        assertEquals(1, home.getNumberOfUsages(itemName));
+
+        home.setUsage(itemName, false);
+        assertFalse(home.isUsing(itemName));
+        assertEquals(0, home.getNumberOfUsages(itemName));
+    }
 
 }

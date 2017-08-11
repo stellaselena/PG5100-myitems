@@ -90,6 +90,41 @@ public class HomePageObject extends PageObject{
         return getText("itemTable:"+position+":text");
     }
 
+    public int getNumberOfUsages(String title){
+        List<WebElement> elements = driver.findElements(
+                By.xpath("//table[@id='itemTable']//tbody//tr[contains(td[3], '" + title + "')]/td[4]")
+        );
+        if (elements.isEmpty()) {
+            return -1;
+        }
+        return Integer.parseInt(elements.get(0).getText());
+    }
+
+    public boolean isUsing(String title) {
+        List<WebElement> elements = driver.findElements(
+                By.xpath("//table[@id='itemTable']//tbody//tr[contains(td[3], '" + title + "')]/td[7]/form/input[@type='checkbox' and @checked='checked']")
+        );
+
+        return !elements.isEmpty();
+    }
+
+    public void setUsage(String title, boolean value) {
+        boolean alreadyUsing = isUsing(title);
+        if ((value && alreadyUsing) || (!value && !alreadyUsing)) {
+            return;
+        }
+
+        List<WebElement> elements = driver.findElements(
+                By.xpath("//table[@id='itemTable']//tbody//tr[contains(td[3], '" + title + "')]/td[7]/form/input[@type='checkbox']")
+        );
+        if (elements.isEmpty()) {
+            return;
+        }
+
+        elements.get(0).click();
+        waitForPageToLoad();
+    }
+
 
 
 

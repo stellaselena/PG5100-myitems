@@ -1,5 +1,6 @@
 package ejb;
 
+import entity.Item;
 import entity.User;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Iterator;
 
 /**
  * Created by Stella on 11.08.2017.
@@ -21,6 +23,54 @@ public class UserEJB implements Serializable {
     private EntityManager em;
 
     public UserEJB() {
+    }
+
+
+    public void addItem(String userId, Long itemId) {
+        User user = em.find(User.class, userId);
+        Item item = em.find(Item.class, itemId);
+
+        if (user.getItemsUsed().stream().anyMatch(e -> e.getId().equals(itemId))) {
+            return;
+        }
+
+        user.getItemsUsed().add(item);
+        item.getUsedByUsers().add(user);
+
+    }
+
+    public boolean isUserUsingItem(String userId, Long itemId) {
+
+        User user = getUser(userId);
+        if (user == null) {
+            return false;
+        }
+
+        return user.getItemsUsed().stream().anyMatch(e -> e.getId().equals(itemId));
+    }
+
+    public void removeItem(String userId, Long itemId) {
+
+        User user = em.find(User.class, userId);
+
+        Iterator<Item> iterItem = user.getItemsUsed().iterator();
+        while (iterItem.hasNext()) {
+            Item current = iterItem.next();
+            if (current.getId().equals(itemId)) {
+                iterItem.remove();
+
+                Iterator<User> iterUser = current.getUsedByUsers().iterator();
+                while (iterUser.hasNext()) {
+                    User k = iterUser.next();
+                    if (userId.equals(k.getUserId())) {
+                        iterUser.remove();
+                        break;
+                    }
+                }
+
+                break;
+            }
+        }
     }
 
     public boolean createUser(String userId, String password, String firstName, String middleName, String lastName) {

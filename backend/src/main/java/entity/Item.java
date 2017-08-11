@@ -6,6 +6,7 @@ import validation.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +39,19 @@ public class Item {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdTime;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<User> usedByUsers;
+
+    public List<User> getUsedByUsers() {
+        if(usedByUsers == null){
+            return new ArrayList<>();
+        }
+        return usedByUsers;
+    }
+
+    public void setUsedByUsers(List<User> usedByUsers) {
+        this.usedByUsers = usedByUsers;
+    }
 
     public Item() {
     }

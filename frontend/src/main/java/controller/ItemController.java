@@ -13,6 +13,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,6 +30,9 @@ public class ItemController implements Serializable {
     public enum Collection {Indoor, Outdoor, All}
 
     private boolean showOnlyOwnItems;
+
+    private Map<Long, Boolean> useMap;
+
 
     @EJB
     private ItemEJB itemEJB;
@@ -46,6 +51,8 @@ public class ItemController implements Serializable {
     @PostConstruct
     public void init() {
         showOnlyOwnItems = true;
+        useMap = new ConcurrentHashMap<>();
+
     }
 
     public List<Item> getItems() {
@@ -56,7 +63,26 @@ public class ItemController implements Serializable {
             items = itemEJB.getAllItemsByUser(loggingController.getRegisteredUser());
         }
 
+        String registeredUser = loggingController.getRegisteredUser();
+        if(registeredUser != null){
+            items.stream().map(Item::getId).forEach(id -> {
+                if(userEJB.isUserUsingItem(registeredUser, id)){
+                    useMap.put(id, true);
+                } else {
+                    useMap.put(id, false);
+                }
+            });
+        }
         return items;
+    }
+
+    public void updateUsage(Long id, Boolean using){
+
+        if(using != null && using){
+            userEJB.addItem(loggingController.getRegisteredUser(), id);
+        } else {
+            userEJB.removeItem(loggingController.getRegisteredUser(), id);
+        }
     }
 
 
@@ -150,5 +176,8 @@ public class ItemController implements Serializable {
         this.collection = collection;
     }
 
+    public Map<Long, Boolean> getUseMap() {
+        return useMap;
+    }
 
 }
