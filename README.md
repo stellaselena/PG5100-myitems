@@ -20,11 +20,10 @@ https://github.com/stellaselena/myitems.git
 Exam module contains 3 modules: backend, frontend, report  
 
 #### Tests
-User backend tests located in UserEJBTest
-Item backend tests located in ItemEJBTests
-
-User frontend tests located in UserCreateAndLoginIT
-Item frontend tests located in MyItemsIT
+* User backend tests located in UserEJBTest
+* Item backend tests located in ItemEJBTests
+* User frontend tests located in UserCreateAndLoginIT
+* Item frontend tests located in MyItemsIT
  
 ## Extra functionality
 * Custom Validation Constraint
