@@ -2,6 +2,7 @@ import org.junit.Test;
 import po.CreateUserPageObject;
 import po.HomePageObject;
 import po.LoginPageObject;
+import po.UserDetailsPageObject;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertNull;
@@ -22,6 +23,14 @@ public class UserCreateAndLoginIT extends WebTestBase {
     public void testLoginLink() {
         LoginPageObject login = home.toLogin();
         assertTrue(login.isOnPage());
+    }
+
+    @Test
+    public void testUserDetailsLink(){
+        String userId = getUniqueId();
+        createAndLogNewUser(userId, "foo", "bar");
+        UserDetailsPageObject userDetails = home.toUserDetails();
+        assertTrue(userDetails.isOnPage());
     }
 
     @Test
@@ -73,4 +82,6 @@ public class UserCreateAndLoginIT extends WebTestBase {
         assertNull(home);
         assertTrue(create.isOnPage());
     }
+
+
 }

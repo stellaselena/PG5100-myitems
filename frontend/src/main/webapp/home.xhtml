@@ -14,7 +14,54 @@
 
     <ui:define name="content">
 
-        <h:outputText value="No Items Available"/>
+        <c:if test="#{loggingController.loggedIn}">
+            <h:button value="Create Item" outcome="newItem.xhtml" id="createItem"/>
+        </c:if>
+
+        <h2>Items</h2>
+        <c:if test="#{loggingController.loggedIn}">
+            <h:form id="showOnlyOwnItemsForm">
+                <h:selectBooleanCheckbox value="#{itemController.showOnlyOwnItems}"
+                                         id="showOnlyOwnItems" onclick="submit()"/>
+                <h:outputLabel for="showOnlyOwnItems" value="Only created by #{loggingController.registeredUser}"/>
+            </h:form>
+        </c:if>
+
+        <c:choose>
+            <c:when test="#{itemController.items.size() == 0}">
+                <h:outputText value="No Items to display. Be the first to create one!"/>
+
+            </c:when>
+
+            <c:otherwise>
+                <h:dataTable value="#{itemController.items}" var="item" border="1" id="itemTable">
+                    <h:column>
+                        <f:facet name="header">Author</f:facet>
+                        <h:outputText value="#{item.user.userId}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Type</f:facet>
+                        <h:outputText value="#{item.type}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Title</f:facet>
+                        <h:outputText value="#{item.title}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Description</f:facet>
+                        <h:outputText value="#{itemController.getItemExcerpt(item)}" id="text"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Created</f:facet>
+                        <h:outputText value="#{item.createdTime}">
+                            <f:convertDateTime pattern="dd/MM/yyyy, HH:mm:ss"/>
+                        </h:outputText>
+                    </h:column>
+
+                </h:dataTable>
+            </c:otherwise>
+        </c:choose>
 
     </ui:define>
 
