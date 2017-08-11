@@ -41,8 +41,8 @@
 
                 <h:dataTable value="#{itemController.items}" var="item" border="1" id="itemTable">
                     <h:column>
-                        <f:facet name="header">Author</f:facet>
-                        <h:outputText value="#{item.user.userId}"/>
+                        <f:facet name="header">Posted By</f:facet>
+                        <h:link value="#{item.user.userId}" outcome="userDetails.jsf?id=#{item.user.userId}" />
                     </h:column>
                     <h:column>
                         <f:facet name="header">Type</f:facet>

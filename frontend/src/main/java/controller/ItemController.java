@@ -100,9 +100,6 @@ public class ItemController implements Serializable {
         return excerpt(text);
     }
 
-    public int getUserItems() {
-        return itemEJB.getAllItemsByUser(loggingController.getRegisteredUser()).size();
-    }
 
     public int getItemTypeCount() {
         List<Item> items;

@@ -12,13 +12,13 @@
 
     <ui:define name="content">
 
-        <c:set var="user" value="#{loggingController.user}"/>
+        <c:set var="user" value="#{userController.getUser(param['id'])}" />
 
         <b>Username</b>: <h:outputLabel value="#{user.userId}" id="userId"/> <br/>
         <b>First name</b>: <h:outputLabel value="#{user.firstName}"/> <br/>
         <b>Middle name</b>: <h:outputLabel value="#{user.middleName}"/> <br/>
         <b>Last name</b>: <h:outputLabel value="#{user.lastName}"/> <br/>
-        <b>Items uploaded</b>: <h:outputLabel value="#{itemController.userItems}"/> <br/>
+        <b>Items uploaded</b>: <h:outputLabel value="#{userController.getUserItems(user.userId)}"/> <br/>
     </ui:define>
 
 </ui:composition>
