@@ -14,7 +14,7 @@ https://github.com/stellaselena/myitems.git
 * 7 jsf pages
 * Additional selenium tests
 * Additional arquillian tests
-* Above 90% JacoCo code coverage
+* 93% JaCoCo code coverage
 
 #### Project structure
 Exam module contains 3 modules: backend, frontend, report  
