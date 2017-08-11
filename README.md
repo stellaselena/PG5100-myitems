@@ -29,8 +29,8 @@ Exam module contains 3 modules: backend, frontend, report
 * Custom Validation Constraint
 * User:  
 `non registered user:`  
-can: login, register, see item overview and item statistics
-cannot: create items and check items as used
+can: login, register, see item overview and item statistics  
+cannot: create items and check items as used   
 `registered user:`  
 can: login, logout, see his/her profile information, create new items,  filter them to only show items created by the user, they can also see in user details how many items they have posted 
 * All users can see how many users are using the item, only registered users can check items that they are using
