@@ -18,9 +18,6 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Arquillian.class)
 public class UserEJBTest extends EJBTestBase {
 
-    private boolean createUser(String user, String password) {
-        return userEJB.createUser(user, password, "a", "b", "c");
-    }
 
     @Test
     public void testCanCreateAUser() {

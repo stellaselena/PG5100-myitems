@@ -21,7 +21,7 @@ public class HomePageObject extends PageObject{
     }
 
     public boolean isOnPage() {
-        return driver.getTitle().equals("My Items Home Page");
+        return driver.getTitle().equals("My ItemTypes Home Page");
     }
 
     public LoginPageObject toLogin() {

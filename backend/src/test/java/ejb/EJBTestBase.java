@@ -1,5 +1,6 @@
 package ejb;
 
+import entity.Item;
 import entity.User;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -18,7 +19,7 @@ public abstract class EJBTestBase {
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addPackages(true, "ejb", "entity")
+                .addPackages(true, "ejb", "entity", "validation")
                 .addPackages(true, "org.apache.commons.codec")
                 .addClass(DeleterEJB.class)
                 .addAsResource("META-INF/persistence.xml");
@@ -28,12 +29,25 @@ public abstract class EJBTestBase {
     protected UserEJB userEJB;
 
     @EJB
+    protected ItemEJB itemEJB;
+
+    @EJB
     private DeleterEJB deleterEJB;
 
     @Before
     @After
     public void emptyDatabase() {
 
+        deleterEJB.deleteEntities(Item.class);
+
         deleterEJB.deleteEntities(User.class);
+    }
+
+    protected boolean createUser(String user){
+        return userEJB.createUser(user,"foo","a","b","c");
+    }
+
+    protected boolean createUser(String user, String password){
+        return userEJB.createUser(user,password,"a","b","c");
     }
 }
